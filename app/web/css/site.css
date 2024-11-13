@@ -86,3 +86,21 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+
+.navbar-expand-md .navbar-collapse,
+.collapse .navbar-collapse {
+    flex-grow: 0;
+}
+
+.login-box {
+    width: 100%;
+    height: 84vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.site-login {
+    max-width: 400px;
+    width: 100%;       
+}
