@@ -21,8 +21,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',  // Вказуємо клас, який реалізує IdentityInterface
             'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity', 'httpOnly' => true], // Налаштовуємо cookie
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -36,9 +37,10 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
+                 // Логування в файл
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'info'],  // Логування помилок та попереджень
                 ],
             ],
         ],
