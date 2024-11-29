@@ -71,6 +71,11 @@ class Articles extends \yii\db\ActiveRecord
         return $this->hasOne(Users::class, ['id' => 'authorid']);
     }
 
+    public function findeOne($id)
+    {
+        return static::findOne($id);
+    }
+
     /**
      * Gets query for [[Comments]].
      *

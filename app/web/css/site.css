@@ -104,3 +104,41 @@ a.desc:after {
     max-width: 400px;
     width: 100%;       
 }
+
+.centered-action{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.help-block{
+    color: var(--bs-danger);
+}
+
+.comment {
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--bs-link-color);
+    text-decoration: underline;
+}
+
+.comment-item {
+    border-bottom: 1px solid gray;
+    padding-bottom: 10px;
+}
+
+.comments-list h3 {
+    margin-top: 1rem;
+    border-bottom: 1px solid gray;
+    padding-bottom: 10px;;
+}
+
+.navbar-brand:hover,
+.nav-link:hover {
+    color: var(--bs-link-color) !important;
+}
+
+.social-icon {
+    height: 20px;
+}

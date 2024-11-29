@@ -11,7 +11,7 @@ use app\models\Topic;
 $this->title = 'Create New Post';
 ?>
 <div class="articles-create">
-    <h1>Create New Post</h1>
+    <h1><?=$model->id == null ? "Create New Post" : "Update Post";?></h1>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -32,7 +32,7 @@ $this->title = 'Create New Post';
 
     <!-- Кнопка відправки -->
     <div class="form-group">
-        <?= Html::submitButton('Create Post', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->id == null ? 'Create Post' : 'Update Post', ['class' => 'btn btn-success']) ?>
     </div>
     <?php if ($model->hasErrors()): ?>
     <div class="alert alert-danger">
