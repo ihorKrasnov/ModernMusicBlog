@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '72f7ca044ac9568c3b9a21309e217b5870d9f5e5',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '72f7ca044ac9568c3b9a21309e217b5870d9f5e5',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'kartik-v/yii2-krajee-base' => array(
+            'pretty_version' => 'v3.0.5',
+            'version' => '3.0.5.0',
+            'reference' => '5c095126d1be47e0bb1f92779b7dc099f6feae31',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../kartik-v/yii2-krajee-base',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'kartik-v/yii2-widget-datepicker' => array(
+            'pretty_version' => 'v1.4.8',
+            'version' => '1.4.8.0',
+            'reference' => 'f5f8b396cf03d4a383aad5e7b338f8cb065abf66',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../kartik-v/yii2-widget-datepicker',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

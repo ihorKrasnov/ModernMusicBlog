@@ -40,7 +40,7 @@ class Comments extends \yii\db\ActiveRecord
             [['articleid', 'authorid', 'message'], 'required'],
             [['articleid', 'authorid', 'commentid'], 'default', 'value' => null],
             [['articleid', 'authorid', 'commentid'], 'integer'],
-            [['message'], 'string'],
+            [['message', 'author'], 'string'],
             [['created_at'], 'safe'],
             [['articleid'], 'exist', 'skipOnError' => true, 'targetClass' => Articles::class, 'targetAttribute' => ['articleid' => 'id']],
             [['commentid'], 'exist', 'skipOnError' => true, 'targetClass' => Comments::class, 'targetAttribute' => ['commentid' => 'id']],

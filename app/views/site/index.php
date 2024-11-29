@@ -1,5 +1,7 @@
 <?php
-
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 /** @var yii\web\View $this */
 
 $this->title = 'Welcome to Modern Music';
@@ -7,36 +9,15 @@ $this->title = 'Welcome to Modern Music';
 <div class="site-index">
     <div class="body-content">
         <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+        <?php foreach ($dataProvider->getModels() as $post): ?>
+                <div class="col-lg-4 mb-3">
+                    <h2><?= Html::encode($post->title) ?></h2> <!-- Assuming you have a 'title' field in your post model -->
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                    <p><?= Html::encode($post->content) ?></p> <!-- Assuming you have a 'excerpt' or a short summary field -->
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+                    <p><a class="btn btn-outline-primary" href="<?= Url::to(['articles/index', 'id' => $post->id]) ?>">Read full text &raquo;</a></p>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>

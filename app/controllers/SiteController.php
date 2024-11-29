@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\ArticlesSearch;
 
 class SiteController extends Controller
 {
@@ -25,10 +26,34 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($tag = null)
     {
-        // Ваш код для домашньої сторінки
-        return $this->render('index');
+        $searchModel = new ArticlesSearch();
+        if ($tag !== null) {
+            // Якщо є параметр 'tag', шукаємо статтю за тегом
+            $searchModel->tag = $tag;
+        }
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionPost($id)
+    {
+        // Отримуємо статтю за її ID
+        $article = Articles::findOne($id);
+
+        // Якщо стаття не знайдена, кидаємо 404
+        if ($article === null) {
+            throw new \yii\web\NotFoundHttpException('Стаття не знайдена');
+        }
+
+        return $this->render('post', [
+            'article' => $article
+        ]);
     }
 
     public function actionError()
