@@ -23,7 +23,9 @@ class ArticlesController extends \yii\web\Controller
             $groupedComments = [];
             foreach ($comments as $comment) {
                 $groupedComments[$comment->commentid ?? 0][] = $comment;
-                $groupedComments[0] = array_reverse($groupedComments[0]);
+                usort($groupedComments[0], function($a, $b) {
+                    return strtotime($b->created_at) - strtotime($a->created_at);
+                });
             }
             
             // Якщо статтю не знайдено, генеруємо помилку 404
