@@ -11,7 +11,7 @@ use kartik\date\DatePicker;
 /* @var $searchModel app\models\ArticlesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Here are your articles';
+$this->title = 'Modern music blog';
 ?>
 
 <h1><?= Html::encode($this->title) ?></h1>

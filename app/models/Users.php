@@ -141,34 +141,32 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     public function register()
-{
-    // Перевіряємо, чи проходить валідація
-    if ($this->validate()) {
-        // Хешуємо пароль перед збереженням
-        $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+    {
+        // Перевіряємо, чи проходить валідація
+        if ($this->validate()) {
+            // Хешуємо пароль перед збереженням
+            $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
 
-        // Генеруємо authKey, якщо він ще не згенерований
-        if (empty($this->authKey)) {
-            $this->authKey = Yii::$app->security->generateRandomString();
-        }
+            // Генеруємо authKey, якщо він ще не згенерований
+            if (empty($this->authKey)) {
+                $this->authKey = Yii::$app->security->generateRandomString();
+            }
 
-        Yii::info('Generated authKey with Model after validating ' . json_encode($this), __METHOD__);
-        
-        // Зберігаємо користувача в базі даних
-        if ($this->save()) {
-            return true;
+            Yii::info('Generated authKey with Model after validating ' . json_encode($this), __METHOD__);
+            
+            // Зберігаємо користувача в базі даних
+            if ($this->save()) {
+                return true;
+            } else {
+                // Якщо не вдалося зберегти, виводимо помилки
+                Yii::error('Error saving user: ' . json_encode($this->errors));
+                return false;
+            }
         } else {
-            // Якщо не вдалося зберегти, виводимо помилки
-            Yii::error('Error saving user: ' . json_encode($this->errors));
-            return false;
+            // Якщо валідація не пройшла, виводимо помилки
+            Yii::error('Validation failed: ' . json_encode($this->errors));
         }
-    } else {
-        // Якщо валідація не пройшла, виводимо помилки
-        Yii::error('Validation failed: ' . json_encode($this->errors));
+
+        return false;
     }
-
-    return false;
-}
-
-
 }
