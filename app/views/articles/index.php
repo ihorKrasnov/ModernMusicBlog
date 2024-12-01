@@ -22,6 +22,11 @@ $this->title = Html::encode($post->title); // Встановлюємо заго�
 
 <!-- Вміст статті (по центру) -->
 <div class="post-content text-center">
+    <?php if (!empty($post->image)): ?>
+        <img style="width: 100%" src="<?= Url::to(['articles/view-image', 'id' => $post->id]) ?>" alt="Article Image">
+    <?php endif; ?>
+</div>
+<div class="post-content text-center">
     <?= Html::encode($post->content) ?> <!-- Виводимо контент статті -->
 </div>
 
@@ -29,7 +34,15 @@ $this->title = Html::encode($post->title); // Встановлюємо заго�
     <?php
     $tags = explode(' ', $post->tag);
     foreach ($tags as $tag) {
-        echo Html::a(Html::encode($tag), Url::to(['/', 'tag' => $tag]), ['class' => 'tag-link']) . ' ';
+        // Перевіряємо, чи тег не починається з '#'
+        if (strpos($tag, '#') !== 0) {
+            $viewtag = '#' . $tag; // Додаємо '#' на початок тега, якщо його немає
+        } else {
+            $viewtag = $tag;
+        }
+        
+        // Виводимо тег із посиланням
+        echo Html::a(Html::encode($viewtag), Url::to(['/', 'tag' => $tag]), ['class' => 'tag-link']) . ' ';
     }
     ?>
 </div>

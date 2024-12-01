@@ -6,6 +6,7 @@ use app\models\Articles;
 use app\models\ArticlesSearch;
 use app\models\Comments;
 use Yii;
+use yii\web\UploadedFile;
 
 class ArticlesController extends \yii\web\Controller
 {
@@ -73,10 +74,16 @@ class ArticlesController extends \yii\web\Controller
             $model->authorid = Yii::$app->user->id; // Встановлення автора статті
 
             // Перевірка, чи форма була надіслана
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей (або іншу сторінку)
-                Yii::$app->session->setFlash('success', 'Article created successfully!');
-                return $this->redirect(['my-articles']); // або ви можете перенаправити на іншу сторінку
+            if ($model->load(Yii::$app->request->post())) {
+                // Завантаження зображення, якщо воно є
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                
+                // Зберігаємо зображення в БД
+                if ($model->saveImageToDb() && $model->save()) {
+                    // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                    Yii::$app->session->setFlash('success', 'Article created successfully!');
+                    return $this->redirect(['my-articles']);
+                }
             }
         } else {
             // Завантаження статті для редагування
@@ -88,10 +95,16 @@ class ArticlesController extends \yii\web\Controller
             }
 
             // Перевірка, чи форма була надіслана
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей (або іншу сторінку)
-                Yii::$app->session->setFlash('success', 'Article updated successfully!');
-                return $this->redirect(['my-articles']); // або ви можете перенаправити на іншу сторінку
+            if ($model->load(Yii::$app->request->post())) {
+                // Завантаження зображення, якщо воно є
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                
+                // Зберігаємо зображення в БД
+                if ($model->saveImageToDb() && $model->save()) {
+                    // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                    Yii::$app->session->setFlash('success', 'Article updated successfully!');
+                    return $this->redirect(['my-articles']);
+                }
             }
         }
 
@@ -99,6 +112,35 @@ class ArticlesController extends \yii\web\Controller
         return $this->render('create', [
             'model' => $model, // Передача моделі в представлення
         ]);
+    }
+
+    public function actionViewImage($id)
+    {
+        $model = Articles::findOne($id);
+        
+        if ($model && $model->image) {
+            // Перевіряємо, чи це є бінарні дані
+            $imageContent = $model->image;
+            
+            if (is_resource($imageContent)) {
+                $imageContent = stream_get_contents($imageContent); // Якщо це ресурс, отримуємо вміст
+            }
+            
+            // Перевірка на наявність бінарних даних
+            if (is_string($imageContent)) {
+                Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+                
+                // Використовуємо finfo для визначення MIME типу
+                $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                $mimeType = $finfo->buffer($imageContent); // Передаємо бінарні дані
+                
+                // Встановлюємо правильний MIME тип для відповіді
+                Yii::$app->response->headers->set('Content-Type', $mimeType);
+                return $imageContent; // Повертаємо бінарні дані
+            }
+        }
+        
+        throw new \yii\web\NotFoundHttpException("Image not found");
     }
 
     public function actionMyArticles()

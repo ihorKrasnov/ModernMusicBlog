@@ -21,6 +21,9 @@ use Yii;
  */
 class Articles extends \yii\db\ActiveRecord
 {
+
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -42,6 +45,8 @@ class Articles extends \yii\db\ActiveRecord
             [['created_at'], 'safe'],
             [['topicid'], 'exist', 'skipOnError' => true, 'targetClass' => Topic::class, 'targetAttribute' => ['topicid' => 'id']],
             [['authorid'], 'exist', 'skipOnError' => true, 'targetClass' => Users::class, 'targetAttribute' => ['authorid' => 'id']],
+
+            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 5 * 1024 * 1024], // максимум 5 МБ
         ];
     }
 
@@ -59,6 +64,16 @@ class Articles extends \yii\db\ActiveRecord
             'tag' => 'Tag',
             'created_at' => 'Created At',
         ];
+    }
+
+    // Метод для збереження зображення у БД
+    public function saveImageToDb()
+    {
+        if ($this->imageFile && $this->validate()) {
+            $this->image = file_get_contents($this->imageFile->tempName);  // Читання файлу в бінарному вигляді
+            return true;
+        }
+        return false;
     }
 
     /**
