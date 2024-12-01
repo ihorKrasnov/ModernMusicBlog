@@ -142,3 +142,7 @@ a.desc:after {
 .social-icon {
     height: 20px;
 }
+
+.active a{
+    color: rgba(var(--bs-btn-focus-shadow-rgb), .5) !important;
+}

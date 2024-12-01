@@ -26,13 +26,18 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex($tag = null)
+    public function actionIndex($tag = null, $topic_id = null)
     {
         $searchModel = new ArticlesSearch();
         if ($tag !== null) {
             // Якщо є параметр 'tag', шукаємо статтю за тегом
             $searchModel->tag = $tag;
         }
+        if ($topic_id !== null) {
+            // Якщо є параметр 'topic_id', шукаємо статтю за темою
+            $searchModel->topicid = $topic_id;
+        }
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

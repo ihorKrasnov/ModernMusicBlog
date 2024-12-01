@@ -21,6 +21,9 @@ $this->title = 'Create New Post';
     <!-- Контент посту -->
     <?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
 
+    <!-- Зображення посту (завантаження файлу) -->
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
+
     <!-- Тема посту (випадаючий список) -->
     <?= $form->field($model, 'topicid')->dropDownList(
         ArrayHelper::map(Topic::find()->all(), 'id', 'name'),

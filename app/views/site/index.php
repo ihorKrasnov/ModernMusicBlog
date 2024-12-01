@@ -5,9 +5,23 @@ use yii\widgets\LinkPager;
 /** @var yii\web\View $this */
 
 $this->title = 'Welcome to Modern Music';
+
+$topics = \app\models\Topic::find()->all();
+$currentTopicId = Yii::$app->request->get('topic_id');
 ?>
 <div class="site-index">
     <div class="body-content">
+         <!-- Меню тем -->
+         <div class="topics-menu mb-4">
+            <ul class="list-inline">
+                <?php foreach ($topics as $topic): ?>
+                    <!-- Перевірка чи вибрана тема, щоб додати клас "active" -->
+                    <li class="list-inline-item <?= $currentTopicId == $topic->id ? 'active' : '' ?>">
+                        <?= Html::a(Html::encode($topic->name), ['index', 'topic_id' => $topic->id], ['class' => 'btn btn-link']) ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
         <div class="row">
         <?php foreach ($dataProvider->getModels() as $post): ?>
                 <div class="col-lg-4 mb-3">
