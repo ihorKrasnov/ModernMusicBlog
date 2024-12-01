@@ -78,11 +78,21 @@ class ArticlesController extends \yii\web\Controller
                 // Завантаження зображення, якщо воно є
                 $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
                 
-                // Зберігаємо зображення в БД
-                if ($model->saveImageToDb() && $model->save()) {
-                    // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
-                    Yii::$app->session->setFlash('success', 'Article created successfully!');
-                    return $this->redirect(['my-articles']);
+                // Якщо зображення завантажене, зберігаємо його в БД
+                if ($model->imageFile && $model->saveImageToDb()) {
+                    // Зберігаємо інші дані статті
+                    if ($model->save()) {
+                        // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                        Yii::$app->session->setFlash('success', 'Article created successfully!');
+                        return $this->redirect(['my-articles']);
+                    }
+                } elseif (!$model->imageFile) {
+                    // Якщо зображення не завантажене, просто зберігаємо статтю без картинки
+                    if ($model->save()) {
+                        // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                        Yii::$app->session->setFlash('success', 'Article created successfully!');
+                        return $this->redirect(['my-articles']);
+                    }
                 }
             }
         } else {
@@ -99,11 +109,21 @@ class ArticlesController extends \yii\web\Controller
                 // Завантаження зображення, якщо воно є
                 $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
                 
-                // Зберігаємо зображення в БД
-                if ($model->saveImageToDb() && $model->save()) {
-                    // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
-                    Yii::$app->session->setFlash('success', 'Article updated successfully!');
-                    return $this->redirect(['my-articles']);
+                // Якщо зображення завантажене, зберігаємо його в БД
+                if ($model->imageFile && $model->saveImageToDb()) {
+                    // Зберігаємо інші дані статті
+                    if ($model->save()) {
+                        // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                        Yii::$app->session->setFlash('success', 'Article updated successfully!');
+                        return $this->redirect(['my-articles']);
+                    }
+                } elseif (!$model->imageFile) {
+                    // Якщо зображення не завантажене, просто зберігаємо статтю без картинки
+                    if ($model->save()) {
+                        // Якщо збереження успішне, відображаємо повідомлення та перенаправляємо на список статей
+                        Yii::$app->session->setFlash('success', 'Article updated successfully!');
+                        return $this->redirect(['my-articles']);
+                    }
                 }
             }
         }
@@ -113,6 +133,7 @@ class ArticlesController extends \yii\web\Controller
             'model' => $model, // Передача моделі в представлення
         ]);
     }
+
 
     public function actionViewImage($id)
     {
