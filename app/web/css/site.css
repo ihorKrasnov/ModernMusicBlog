@@ -146,3 +146,12 @@ a.desc:after {
 .active a{
     color: rgba(var(--bs-btn-focus-shadow-rgb), .5) !important;
 }
+
+.topics-menu-container ul {
+    overflow-x: scroll;
+    white-space: nowrap;
+    height: 95px;
+    align-items: center;
+    display: flex
+;
+}
