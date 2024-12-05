@@ -19,12 +19,12 @@ $currentTopicId = Yii::$app->request->get('topic_id');
                 <?php endforeach; ?>
             </ul>
         </div>
-<div class="site-index">
+        <div class="site-index">
     <div class="body-content">
         <div class="row">
-        <?php foreach ($dataProvider->getModels() as $post): ?>
+            <?php foreach ($dataProvider->getModels() as $post): ?>
                 <div class="col-lg-4 mb-3">
-                    <h2><?= Html::encode($post->title) ?></h2> <!-- Assuming you have a 'title' field in your post model -->
+                    <h2><?= Html::encode($post->title) ?></h2>
 
                     <?php
                         $content = Html::encode($post->content);
@@ -38,12 +38,23 @@ $currentTopicId = Yii::$app->request->get('topic_id');
                             $content = implode(' ', $words); // Якщо слів менше або рівно 20, просто виводимо весь текст
                         }
                     ?>
-                        <p><?= $content ?></p>
-                    
-                    <p><strong>Published:</strong> <?= Yii::$app->formatter->asDate($post->created_at, 'long') ?></p> <!-- Виводимо дату -->
+                    <p><?= $content ?></p>
+
+                    <p><strong>Published:</strong> <?= Yii::$app->formatter->asDate($post->created_at, 'long') ?></p>
                     <p><a class="btn btn-outline-primary" href="<?= Url::to(['articles/index', 'id' => $post->id]) ?>">Read full text &raquo;</a></p>
                 </div>
             <?php endforeach; ?>
         </div>
+
+        <!-- Пагінація -->
+        <div class="pagination-container">
+            <?= LinkPager::widget([
+                'pagination' => $dataProvider->pagination,
+                'nextPageLabel' => '>>',
+                'prevPageLabel' => '<<',
+                'maxButtonCount' => 5, // Максимальна кількість кнопок пагінації
+            ]) ?>
+        </div>
     </div>
 </div>
+

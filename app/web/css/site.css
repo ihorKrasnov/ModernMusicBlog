@@ -152,6 +152,13 @@ a.desc:after {
     white-space: nowrap;
     height: 95px;
     align-items: center;
-    display: flex
-;
+    display: flex;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+.pagination li{
+    margin: 0 10px;
 }

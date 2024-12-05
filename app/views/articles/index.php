@@ -131,13 +131,23 @@ $this->title = Html::encode($post->title); // Встановлюємо заго�
                                 <div class="reply-item" style="margin-left: 50px;">
                                     <strong><?= Html::encode($reply->author) ?></strong><br>
                                     <?= Html::encode($reply->message) ?><br>
-                                    <small><?= Yii::$app->formatter->asDatetime($reply->created_at) ?></small><br>
+                                    
+                                    <small><?= Yii::$app->formatter->asDatetime(value: $reply->created_at) ?></small><br>
                                 </div>
                         <?php
                             }
                         }
                         ?>
                     </div>
+                    <?php
+                    // Перевірка, чи авторизований користувач і чи це його коментар
+                    if (!Yii::$app->user->isGuest && $parentComment->authorid == Yii::$app->user->id) {
+                    ?>
+                        <span class="comment delete-btn" data-comment-id="<?= $parentComment->id ?>">Delete</span>
+                    <?php
+                    }
+                    ?>
+                    <br>
                     <span class="comment reply-btn" style="font-size: 16px !important;" data-comment-id="<?= $parentComment->id ?>">Reply</span>
                     <div class="comment-form" id="reply-form-<?= $parentComment->id ?>" style="display: none;">
                         <h3>Add comment</h3>
@@ -190,6 +200,41 @@ $this->title = Html::encode($post->title); // Встановлюємо заго�
                         } else {
                             replyForm.style.display = "none";
                         }
+                    }
+                });
+            }
+
+            const deleteBtns = document.getElementsByClassName("delete-btn");
+
+            for (let i = 0; i < deleteBtns.length; i++) {
+                deleteBtns[i].addEventListener("click", function() {
+                    const commentId = this.getAttribute("data-comment-id");
+
+                    if (confirm("Are you sure you want to delete this comment?")) {
+                        // Викликаємо AJAX-запит для видалення
+                        fetch('<?= Url::to(['comments/delete-comment']) ?>?commentId=' + commentId, {
+                            method: 'POST',
+                            headers: {
+                                'X-Pjax': 'true',
+                                'X-CSRF-Token': '<?= Yii::$app->request->csrfToken ?>'
+                            }
+                        })
+                        .then(response => response.json()) // Автоматичний парсинг JSON
+                        .then(data => {
+                            if (data.success) {
+                                // Якщо успішно видалили коментар, видаляємо його з DOM
+                                const commentElement = document.getElementById('comment-' + commentId);
+                                if (commentElement) {
+                                    commentElement.remove();
+                                }
+                            } else {
+                                alert(data.message || 'Failed to delete comment');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while deleting the comment.');
+                        });
                     }
                 });
             }

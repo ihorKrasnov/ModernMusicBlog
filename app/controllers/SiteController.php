@@ -38,13 +38,16 @@ class SiteController extends Controller
             $searchModel->topicid = $topic_id;
         }
 
+        // Додаємо пагінацію на 9 постів на сторінку
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination->pageSize = 9;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+
 
     public function actionPost($id)
     {
